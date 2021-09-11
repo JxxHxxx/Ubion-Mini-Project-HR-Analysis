@@ -3,11 +3,11 @@ HR = raw_HR
 plot1 = raw_HR$satisfaction_level 
 
 acc = table(raw_HR$Work_accident)
-accident_ratio = acc[[2]]/(acc[[1]] + acc[[2]]) # È¸»çÀÇ »ç°íÀ²
+accident_ratio = acc[[2]]/(acc[[1]] + acc[[2]]) # íšŒì‚¬ì˜ ì‚¬ê³ ìœ¨
 
 p = ggplot(data = raw_HR, aes(raw_HR$Work_accident)) + geom_bar()
 
-p#  ÀüÃ¼ Á÷¿ø »ç°í À¯¹«
+p#  ì „ì²´ ì§ì› ì‚¬ê³  ìœ ë¬´
 
 
 sales_accident = HR %>%
@@ -30,8 +30,8 @@ accident_pop_df = data.frame(col1 = sales_accident[,1], col2=sales_accident[,2]/
 sales_accident_chart = ggplot(data = accident_pop_df, 
                       aes(x = reorder(sales, -(accident - accident_ratio)), y = accident - accident_ratio, 
                       fill = accident - accident_ratio)) + geom_col() +
-                      labs(x = 'ºÎ¼­', y = 'ºÎ¼­º° »ç°íÀ² - »ç³» »ç°íÀ²') 
+                      labs(x = 'ë¶€ì„œ', y = 'ë¶€ì„œë³„ ì‚¬ê³ ìœ¨ - ì‚¬ë‚´ ì‚¬ê³ ìœ¨') 
 
-sales_accident_chart# ºÎ¼­º° »ç°íÀ²
+sales_accident_chart# ë¶€ì„œë³„ ì‚¬ê³ ìœ¨
 
 
