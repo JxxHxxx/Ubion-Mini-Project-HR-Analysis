@@ -16,6 +16,6 @@
 
 # Participants
 
-* [LEE JEA HEON](https://github.com/JxxHxxx)<br>
+* [LEE JAE HEON](https://github.com/JxxHxxx)<br>
 * [이주희](https://github.com/fredlee613)<br>
 * [채윤길](https://github.com/yg2944)<br>
