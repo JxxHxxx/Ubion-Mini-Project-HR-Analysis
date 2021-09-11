@@ -1,0 +1,37 @@
+raw_HR = read.csv('C:/Users/JH/Desktop/Rstudy/HR_comma_sep.csv')
+HR = raw_HR
+plot1 = raw_HR$satisfaction_level 
+
+acc = table(raw_HR$Work_accident)
+accident_ratio = acc[[2]]/(acc[[1]] + acc[[2]]) # 회사의 사고율
+
+p = ggplot(data = raw_HR, aes(raw_HR$Work_accident)) + geom_bar()
+
+p#  전체 직원 사고 유무
+
+
+sales_accident = HR %>%
+  group_by(sales) %>%
+  summarise(accident = sum(Work_accident))
+
+sales_pop = HR %>%
+  group_by(sales) %>%
+  summarise(n = n())
+
+sales_accident[,1]
+
+sales_accident[,2]/sales_pop[,2] 
+
+accident_pop_df = data.frame(col1 = sales_accident[,1], col2=sales_accident[,2]/sales_pop[,2])
+
+
+
+
+sales_accident_chart = ggplot(data = accident_pop_df, 
+                      aes(x = reorder(sales, -(accident - accident_ratio)), y = accident - accident_ratio, 
+                      fill = accident - accident_ratio)) + geom_col() +
+                      labs(x = '부서', y = '부서별 사고율 - 사내 사고율') 
+
+sales_accident_chart# 부서별 사고율
+
+
