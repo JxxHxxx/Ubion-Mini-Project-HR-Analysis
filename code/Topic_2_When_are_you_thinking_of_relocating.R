@@ -110,13 +110,13 @@ left_df
 salary_df
 
 s1 = ggplot(salary_df, aes(reorder(x = salary, -left/n),y = left/n), fill = salary) + geom_col()
-s1  # ¿¬ºÀ°ú ÀÜ·ùÀÇ °ü°è
+s1  # ì—°ë´‰ê³¼ ì”ë¥˜ì˜ ê´€ê³„
 
 s2 = ggplot(left_df, aes(x = left, y = years)) + geom_col()
-s2 # ¿¬Â÷ ÀÌÁ÷·ü
+s2 # ì—°ì°¨ ì´ì§ë¥ 
 
 s3 = ggplot(left_df, aes(x = left, y = time)) + geom_col()
-s3 # ±Ù¹« ½Ã°£º° ÀÌÁ÷·ü
+s3 # ê·¼ë¬´ ì‹œê°„ë³„ ì´ì§ë¥ 
 
 s4 = ggplot(years_df, aes(x = time_spend_company, y = left)) + geom_col()
 s4
