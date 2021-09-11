@@ -1,37 +1,35 @@
+# ÄÚµå ½ÇÇà Àü dplyr, ggplot2 ¶óÀÌºê·¯¸®¸¦ import ÇØÁÖ¼¼¿ä.
+
 raw_HR = read.csv('C:/Users/JH/Desktop/Rstudy/HR_comma_sep.csv')
 HR = raw_HR
-plot1 = raw_HR$satisfaction_level 
 
-acc = table(raw_HR$Work_accident)
-accident_ratio = acc[[2]]/(acc[[1]] + acc[[2]]) # íšŒì‚¬ì˜ ì‚¬ê³ ìœ¨
-
-p = ggplot(data = raw_HR, aes(raw_HR$Work_accident)) + geom_bar()
-
-p#  ì „ì²´ ì§ì› ì‚¬ê³  ìœ ë¬´
-
-
-sales_accident = HR %>%
+sales_accident = HR %>% # df : ºÎ¼­º° »ç°í(Sum)
   group_by(sales) %>%
   summarise(accident = sum(Work_accident))
 
-sales_pop = HR %>%
+sales_pop = HR %>% # df : ºÎ¼­º° Á÷¿ø ¼ö(sum)
   group_by(sales) %>%
   summarise(n = n())
 
-sales_accident[,1]
-
-sales_accident[,2]/sales_pop[,2] 
+# ------------------------ ºÎ¼­º° »ç°íÀ² ½Ã°¢È­¸¦ À§ÇØ Df ¸¦ ¸¸µé°Ú½À´Ï´Ù. ------------------------
+sales_accident[,1] # ºÎ¼­ Name
+sales_accident[,2]/sales_pop[,2]  # ºÎ¼­º° »ç°íÀ²
 
 accident_pop_df = data.frame(col1 = sales_accident[,1], col2=sales_accident[,2]/sales_pop[,2])
-
-
+accident_pop_df # ºÎ¼­º° »ç°íÀ² DF
 
 
 sales_accident_chart = ggplot(data = accident_pop_df, 
                       aes(x = reorder(sales, -(accident - accident_ratio)), y = accident - accident_ratio, 
                       fill = accident - accident_ratio)) + geom_col() +
-                      labs(x = 'ë¶€ì„œ', y = 'ë¶€ì„œë³„ ì‚¬ê³ ìœ¨ - ì‚¬ë‚´ ì‚¬ê³ ìœ¨') 
+                      labs(x = 'ºÎ¼­', y = 'ºÎ¼­º° »ç°íÀ² - »ç³» »ç°íÀ²')  # (ºÎ¼­º° »ç°íÀ² - »ç³» ÀüÃ¼ »ç°íÀ²) Â÷Æ®
 
-sales_accident_chart# ë¶€ì„œë³„ ì‚¬ê³ ìœ¨
+sales_accident_chart
+# ----------------------------------     ºÎ¼­º° ±Ù¹« ½Ã°£     ------------------------------------
+
+sales_hours_chart = ggplot(HR, aes(x = reorder(sales, - average_montly_hours), y = average_montly_hours)) +
+ geom_col() # ºÎ¼­º° ±Ù¹«½Ã°£ Â÷Æ®
+
+sales_hours_chart
 
 

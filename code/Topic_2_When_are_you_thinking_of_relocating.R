@@ -1,68 +1,3 @@
-sales_pop
-par(mfrow=c(1,2))
-p1 = ggplot(data = sales_pop, aes(x = reorder(sales, -n), y = n)) + geom_col()
-p1
-
-
-# grid.arrange(p1, sales_accident_chart, ncol = 1)
-
-nbp = abs_HR$number_project
-
-avgmh = abs_HR$average_montly_hours
-
-df_nbp_avgmh = data.frame(col1 = nbp, col2 = avgmh)
-
-p2 = ggplot(df_nbp_avgmh, aes(x = col1, y = col2)) + geom_boxplot()
-p2
-
-abs_HR = read.csv('C:/Users/JH/Desktop/Rstudy/HRcomma.csv')
-
-np = HR$number_project
-mh = HR$average_montly_hours
-
-p3 = ggplot(HR, aes(x = HR$sales, y = mh/np)) + geom_boxplot()
-p3
-
-c('technical'='#131230',
-  'IT'='#002955',
-  'management'='#074ca1',
-  'accounting'='#7c0022',
-  'sales'='#ff6600',
-  'RandD'='#c70125',
-  'support'='#000000',
-  'product_mng'='#c30452',
-  'marketing'='#315288',
-  'hr'='#ff0000') -> sales_name
-
-
-
-p4 = ggplot(HR, aes(x = reorder(sales, -average_montly_hours), y = average_montly_hours),fill = average_montly_hours) + geom_bar(stat='identity') +
-  scale_fill_manual(values = c("orange", "skyblue", "royalblue", "blue", "navy","orange", "skyblue", "royalblue", "blue", "navy"))
-p4
-
-p5 = ggplot(left_pop,aes(x =sales, y = left/n)) + geom_col(stat='identity')
-p5
-
-
-
-
-left_pop = HR %>%
-  group_by(sales) %>%
-  summarise(left = sum(left), n = n())
-
-time_sales = HR %>%
-  group_by(sales) %>%
-  summarise(years = sum(time_spend_company),  npj = sum(number_project),n = n())
-
-p6 = ggplot(time_sales, aes(x=sales, y=years/n)) + geom_col()
-p6
-
-p7 = ggplot(time_sales, aes(x=sales, y = npj/n)) + geom_col()
-p7
-
-p8 = ggplot(time_sales, aes(x=sales, y = npj)) + geom_col()
-p8
-
 left_df = HR %>%
   group_by(left) %>%
   summarise(n = n(), 
@@ -72,15 +7,17 @@ left_df = HR %>%
             accid = mean(Work_accident),
             satis = mean(satisfaction_level),
             promo = mean(promotion_last_5years)
-            )
+            ) # ÀÌÁ÷°ú ´Ù¸¥ ÇÇÃ³µéÀÌ ¾î¶² °ü°è¸¦ °¡Áö´ÂÁö »ìÆìº¸±â À§ÇØ ¸¸µç DF
 
-salary_df = HR %>%
+
+salary_df = HR %>% # ±Ş¿© ¼öÁØ°ú ÀÌÁ÷·ü DF
   group_by(salary) %>%
-  summarise(n = n(),
-            left = sum(left) 
+  summarise(left = sum(left),
+            n =n()
             )
 
-years_df = HR %>%
+
+years_df = HR %>% # ¿¬Â÷º° ÀÌÁ÷·ü DF
   group_by(time_spend_company) %>%
   summarise(n = n(),
             eval = mean(satisfaction_level), 
@@ -89,48 +26,36 @@ years_df = HR %>%
             worktime = mean(average_montly_hour)
             )
 
-salary_df = HR %>%
-  group_by(salary) %>%
-  summarise(left = sum(left),
-            years = 
-            n =n()
-            )
 
-saletime_df = HR %>%
-  group_by(time_spend_company,salary) %>%
+years_salary_df = HR %>% # ¿¬Â÷º° ±Ş¿© ¼öÁØ ºĞÆ÷¸¦ º¸±â À§ÇØ ¸¸µç DF
+  group_by(time_spend_company, salary) %>%
   summarise(n = n()) %>%
   mutate(rati = sum(n)) %>%
-  mutate(pct = round(n/rati*100,2))
+  mutate(pct = round(n/rati*100,2)
+         )
 
 
-saletime_df
+salary_df
 years_df
-salary_df
-left_df
-salary_df
+years_salary_df
 
-s1 = ggplot(salary_df, aes(reorder(x = salary, -left/n),y = left/n), fill = salary) + geom_col()
-s1  # ì—°ë´‰ê³¼ ì”ë¥˜ì˜ ê´€ê³„
+#------------------------------------------  Â÷Æ® ---------------------------------------------------
 
-s2 = ggplot(left_df, aes(x = left, y = years)) + geom_col()
-s2 # ì—°ì°¨ ì´ì§ë¥ 
+salary_left_chart = ggplot(salary_df, aes(reorder(x = salary, -left/n),y = left/n), fill = salary) + 
+  geom_col()  # ±Ş¿©¿Í ÀÜ·ù °ü°è Â÷Æ®
 
-s3 = ggplot(left_df, aes(x = left, y = time)) + geom_col()
-s3 # ê·¼ë¬´ ì‹œê°„ë³„ ì´ì§ë¥ 
+salary_left_chart 
 
-s4 = ggplot(years_df, aes(x = time_spend_company, y = left)) + geom_col()
-s4
+years_left_chart = ggplot(years_df, aes(x = time_spend_company, y = left)) + 
+  geom_col() #¿¬Â÷º° ÀÌÁ÷·ü Â÷Æ®
+
+years_left_chart
 
 
-s5 = ggplot(salary_df, aes(x = salary, y = left/n)) + geom_col()
-s5
-
-s6 = ggplot(data = HR, aes(reorder(x = salary, -time_spend_company), y = time_spend_company, fill = time_spend_company)) + geom_col()
-s6
-
-s7 = ggplot(data = saletime_df, aes(x = time_spend_company, y = pct, fill = salary)) + 
+years_salary_chart = ggplot(years_salary_df, aes(x = time_spend_company, y = pct, fill = salary)) + 
   geom_col() +
-  coord_flip()
-s7
+  coord_flip() # ¿¬Â÷º° ±Ş¿© ¼öÁØ Â÷Æ®
+
+years_salary_chart
 
 
